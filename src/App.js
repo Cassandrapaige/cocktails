@@ -4,35 +4,20 @@ import './App.css';
 import Navbar from './components/navbar/navbar.component';
 import CocktailsList from './components/cocktails-list/cocktails-list.component'
 
-function App() {
-  const [cocktailList, setCocktailList] = useState([]);
-  const [num, setNum] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+const App = () => {
+  const items = JSON.parse(localStorage.getItem('items')) || [];
+  const [count, setCount] = useState(JSON.parse(localStorage.getItem('items')) || 0);
 
-  useEffect(() => {
-      setIsLoading(true);
-      let list = [];
-      for(let char of 'abcdefghijklmnopqrstuvwxyz') 
-          axios.get(`https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${char}`)
-          .then(result => {
-              list.push(result.data.drinks);
-              setCocktailList([].concat.apply([], list));
-              setIsLoading(false);
-        })
-  }, [])
-
-  const sortedList = cocktailList.sort((a, b) => {
-    let textA = a && a.strDrink.toUpperCase();
-    let textB = b && b.strDrink.toUpperCase();
-    return (textA < textB ? -1 : 1);
-});
-
-const sortedAlcoholicList = sortedList.filter(el => el && el.strAlcoholic === 'Alcoholic')
+  const addToFavourites = item => {
+    items.push(item);
+    localStorage.setItem('items', JSON.stringify(items));
+    setCount(JSON.parse(localStorage.getItem('items')))
+}
 
   return (
     <div className="App">
-      <Navbar/ >
-      <CocktailsList list = {sortedAlcoholicList} num={num}/>
+      <Navbar count = {items.length}/ >
+      <CocktailsList handleClick = {addToFavourites}/>
     </div>
   );
 }

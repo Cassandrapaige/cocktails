@@ -17,6 +17,13 @@ cursor: pointer;
 
 export const Title = styled.h2`
 font-size: 5vw;
-line-height: 6vw;
+line-height: 5vw;
 padding-bottom: 10px;
+`
+
+export const CardLogo = styled.img`
+width: 40%;
+position: absolute;
+right: 0; 
+bottom: 0;
 `
