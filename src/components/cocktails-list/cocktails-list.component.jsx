@@ -5,12 +5,16 @@ import CocktailCard from '../cocktail-card/cocktail-card.component'
 
 import GridContainer from '../grid-container/grid-container.component'
 
-const CocktailsList = ({...rest}) => {
+import {Memo} from './cocktails-list.styles'
+import SelectedCocktail from '../selected-cocktail/selected-cocktail.component'
+
+const CocktailsList = ({title, handleClick, ...rest}) => {
     const [cocktailList, setCocktailList] = useState([]);
     const [num, setNum] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
-    const [title, setTitle] = useState(' Add to Favourites');
-  
+    const items = JSON.parse(localStorage.getItem('items')) || [];
+    const [count, setCount] = useState(JSON.parse(localStorage.getItem('items')) || 0);
+    
     useEffect(() => {
         setIsLoading(true);
         let list = [];
@@ -19,7 +23,9 @@ const CocktailsList = ({...rest}) => {
             .then(result => {
                 list.push(result.data.drinks);
                 setCocktailList([].concat.apply([], list));
-                setIsLoading(false);
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 1500)
           })
     }, [])
   
@@ -29,22 +35,32 @@ const CocktailsList = ({...rest}) => {
       return (textA < textB ? -1 : 1);
   });
   
+  const setSelected = index => {
+      setNum(index);
+      window.scrollTo(0, 0);
+  }
+
   const sortedAlcoholicList = sortedList.filter(el => el && el.strAlcoholic === 'Alcoholic')
 
     return (
+        <>
+        <SelectedCocktail list = {sortedAlcoholicList} num = {num} setNum = {setNum} handleClick = {handleClick} {...rest}/>
         <GridContainer>
-        {sortedAlcoholicList.map((item, index) => (
+            {sortedAlcoholicList.map((item, index) => (
             item && index != num && (              
                <CocktailCard 
+                    setSelected = {() => setSelected(index)}
                     key = {index}
                     cocktail = {item} 
-                    type = 'add'
-                    title = {title}
+                    index = {index}
+                    title = {item.isChecked ? ' Added!' : ' Add to favourites'}
+                    handleClick = {handleClick}
                     {...rest}
                 />
             )
         ))}
         </GridContainer>
+        </>
     )
 }
 

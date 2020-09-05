@@ -5,8 +5,8 @@ import {NavbarContainer, Logo, Counter} from './navbar.styles'
 const Navbar = ({count = 0}) => {
     return (
         <NavbarContainer>
-            <Logo>Everything Cocktails</Logo>
-            <Counter>Favourites ({count})</Counter>
+            <Logo to = '/'>Everything Cocktails</Logo>
+            <Counter to = '/favourites'>Favourites ({count})</Counter>
         </NavbarContainer>
     )
 }

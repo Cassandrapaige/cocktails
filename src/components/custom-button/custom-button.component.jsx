@@ -2,13 +2,12 @@ import React from 'react'
 
 import {Button} from './custom-button.styles'
 
-const CustomButton = ({title, type, handleClick, item, ...rest}) => {
+const CustomButton = ({title, type, handleClick, item, index,...rest}) => {
     
     return (
         <Button 
             isChecked = {item.isChecked}
-            data-type = {type} 
-            onClick = {() => handleClick(item)} 
+            onClick = {(e) => handleClick(e, item, index)} 
             {...rest}
         >
             <i class="fas fa-heart"></i>{title}
